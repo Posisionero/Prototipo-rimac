@@ -1,0 +1,62 @@
+{
+    "model_name": "MultiAttnHeadSimple",
+    "model_type": "PyTorch",
+    "model_params": {
+        "number_time_series": 2,
+        "seq_len": 24,
+        "output_seq_len": 6,
+        "d_model": 32,
+        "num_heads": 4,
+        "dropout": 0.1
+    },
+    "dataset_params": {
+        "class": "default",
+        "training_path": "data/datos_rimac_sinteticos.csv",
+        "validation_path": "data/datos_rimac_sinteticos.csv",
+        "test_path": "data/datos_rimac_sinteticos.csv",
+        "batch_size": 16,
+        "forecast_history": 24,
+        "forecast_length": 6,
+        "train_end": 1050,
+        "valid_start": 1051,
+        "valid_end": 1275,
+        "target_col": ["caudal"],
+        "relevant_cols": ["precipitacion", "caudal"],
+        "datetime_col": "datetime",
+        "scaler": "MinMaxScaler",
+        "interpolate": false
+    },
+    "training_params": {
+        "criterion": "MSE",
+        "optimizer": "Adam",
+        "optim_params": {
+            "lr": 0.001,
+            "weight_decay": 0.0001
+        },
+        "epochs": 60,
+        "batch_size": 16
+    },
+    "metrics": ["MSE", "RMSE", "L1"],
+    "inference_params": {
+        "datetime_start": "2024-02-17",
+        "hours_to_forecast": 12,
+        "test_csv_path": "data/datos_rimac_sinteticos.csv",
+        "decoder_params": {
+            "decoder_function": "simple_decode",
+            "unsqueeze_dim": 1
+        },
+        "dataset_params": {
+            "file_path": "data/datos_rimac_sinteticos.csv",
+            "forecast_history": 24,
+            "forecast_length": 6,
+            "target_col": ["caudal"],
+            "relevant_cols": ["precipitacion", "caudal"],
+            "datetime_col": "datetime",
+            "interpolate_param": false
+        }
+    },
+    "wandb": {
+        "name": "rimac_huayco_6h_forecast",
+        "project": "flow-forecast"
+    }
+}
